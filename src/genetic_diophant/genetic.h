@@ -2,21 +2,21 @@
 #include <vector>
 
 namespace genetic {
-static constexpr std::size_t alleles_count = 4;
+static constexpr std::size_t kAllelesCount = 4;
 
-using allele_t = unsigned int;
-using allele_array_t = std::array<allele_t, alleles_count>;
+using Allele = unsigned int;
+using AlleleArray = std::array<Allele, kAllelesCount>;
 
 struct Gene {
-    allele_array_t alleles;
+    AlleleArray alleles;
     unsigned int fitness = 0;
     float likelihood = 0.f;
 
     Gene() {}
-    Gene( allele_array_t alleles ) : alleles( std::move( alleles ) ) {}
+    Gene( AlleleArray alleles ) : alleles( std::move( alleles ) ) {}
 
     inline bool operator==( const Gene &that ) {
-        for ( auto i = 0; i < alleles_count; ++i ) {
+        for ( auto i = 0; i < kAllelesCount; ++i ) {
             if( this->alleles[i] != that.alleles[i] ) {
                 return false;
             }
@@ -26,13 +26,13 @@ struct Gene {
     }
 };
 
-static constexpr std::size_t population_count = 5;
+static constexpr std::size_t kPopulationCount = 5;
 
-using gene_container_t = std::vector<Gene>;
+using GeneContainer = std::vector<Gene>;
 
 class Diophant {
   public:
-    Diophant( allele_array_t coefficients, allele_t result ) :
+    Diophant( AlleleArray coefficients, Allele result ) :
         coefficients_( coefficients ),
         result_( result ) {
     }
@@ -42,8 +42,8 @@ class Diophant {
     }
 
   private:
-    allele_array_t coefficients_;
-    allele_t result_;
+    AlleleArray coefficients_;
+    Allele result_;
 };
 
 }  // namespace genetic

@@ -12,8 +12,8 @@ class GeneTest : public ::testing::Test {
 };
 
 TEST_F( GeneTest, should_be_equal ) {
-    auto g1 = Gene( allele_array_t( {{1, 2, 3, 4}} ) );
-    auto g2 = Gene( allele_array_t( {{1, 2, 3, 4}} ) );
+    auto g1 = Gene( AlleleArray( {{1, 2, 3, 4}} ) );
+    auto g2 = Gene( AlleleArray( {{1, 2, 3, 4}} ) );
 
     EXPECT_TRUE( g1 == g2 );
 }
@@ -26,8 +26,8 @@ class DiophantTest : public ::testing::Test {
     using diophant_ptr_t = std::unique_ptr<Diophant>;
     diophant_ptr_t diophant_;
 
-    static constexpr allele_array_t coefficients = allele_array_t( {{ 1, 2, 3, 4 }} );
-    static constexpr allele_t result = allele_t( 30 );
+    static constexpr AlleleArray coefficients = AlleleArray( {{ 1, 2, 3, 4 }} );
+    static constexpr Allele result = Allele( 30 );
 
     virtual void SetUp() {
         diophant_ = diophant_ptr_t( new Diophant( coefficients, result ) );
@@ -39,16 +39,16 @@ class DiophantTest : public ::testing::Test {
 
 };
 
-constexpr allele_array_t DiophantTest::coefficients;
-constexpr allele_t DiophantTest::result;
+constexpr AlleleArray DiophantTest::coefficients;
+constexpr Allele DiophantTest::result;
 
 
 TEST_F( DiophantTest, should_solve ) {
     auto gene = diophant_->Solve();
 
-    auto actual_result = allele_t( 0 );
+    auto actual_result = Allele( 0 );
 
-    for( auto i = 0; i < alleles_count; ++i ) {
+    for( auto i = 0; i < kAllelesCount; ++i ) {
         actual_result += gene.alleles[0] * coefficients[0];
     }
 
