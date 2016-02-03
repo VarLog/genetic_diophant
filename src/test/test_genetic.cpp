@@ -12,8 +12,8 @@ class GeneTest : public ::testing::Test {
 };
 
 TEST_F( GeneTest, should_be_equal ) {
-    auto g1 = Gene( AlleleArray( {{1, 2, 3, 4}} ) );
-    auto g2 = Gene( AlleleArray( {{1, 2, 3, 4}} ) );
+    const auto g1 = Gene( AlleleArray( {{1, 2, 3, 4}} ) );
+    const auto g2 = Gene( AlleleArray( {{1, 2, 3, 4}} ) );
 
     EXPECT_TRUE( g1 == g2 );
 }
@@ -44,12 +44,14 @@ constexpr Allele DiophantTest::result;
 
 
 TEST_F( DiophantTest, should_solve ) {
-    auto gene = diophant_->Solve();
+    auto gene = Gene();
+
+    ASSERT_NO_THROW( gene = diophant_->Solve() );
 
     auto actual_result = Allele( 0 );
 
     for( auto i = 0; i < kAllelesCount; ++i ) {
-        actual_result += gene.alleles[0] * coefficients[0];
+        actual_result += gene.alleles[i] * coefficients[i];
     }
 
     EXPECT_EQ( result, actual_result );
