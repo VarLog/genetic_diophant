@@ -179,6 +179,8 @@ class Diophant {
         return Parents( parent1, parent2 );
     }
 
+    static constexpr float kMutationProbability = .05;
+
     Gene Crossover( const Parents &parents ) const {
         std::uniform_int_distribution<std::size_t> dis_separator( 1, kAllelesCount - 1 );
 
@@ -204,9 +206,24 @@ class Diophant {
             child.alleles[i] = parent.alleles[i];
         }
 
-        /// \todo mutations
+        Mutation( child );
 
         return child;
+    }
+
+    void Mutation( Gene &gene ) const {
+        std::uniform_real_distribution<double> dis_mutation( 0., 1. );
+        auto prob_mutation = dis_mutation( mt_generator_ );
+
+        if ( prob_mutation <= kMutationProbability ) {
+            std::uniform_int_distribution<std::size_t> dis_mutation_allele_index( 0, kAllelesCount - 1 );
+            auto allele_index = dis_mutation_allele_index( mt_generator_ );
+
+            std::uniform_int_distribution<Allele> dis_mutation_allele( 1, result_ );
+            auto allele = dis_mutation_allele( mt_generator_ );
+
+            gene.alleles[allele_index] = allele;
+        }
     }
 };
 
