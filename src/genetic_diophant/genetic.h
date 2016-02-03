@@ -31,7 +31,7 @@ struct Gene {
     }
 };
 
-static constexpr std::size_t kPopulationCount = 500;
+static constexpr std::size_t kPopulationCount = 25;
 
 using GeneContainer = std::vector<Gene>;
 
@@ -43,7 +43,7 @@ class Diophant {
         population_.reserve( kPopulationCount );
     }
 
-    Gene Solve( unsigned int iteration_count_max = 5000 ) {
+    Gene Solve( unsigned int iteration_count_max = 500 ) {
         std::random_device rd;
         mt_generator_.seed( rd() );
 
@@ -68,7 +68,6 @@ class Diophant {
             CalculateLikelihoods();
 
             CreateNewPopulation();
-
         }
 
         throw new std::runtime_error( "Could not find the result gene" );
@@ -140,7 +139,7 @@ class Diophant {
         auto parent1 = Gene();
 
         {
-            std::uniform_real_distribution<double> dis( 0, 1 );
+            std::uniform_real_distribution<double> dis( 0., 1. );
 
             auto prob = dis( mt_generator_ );
             auto likelihood_sum = 0.;
@@ -158,7 +157,7 @@ class Diophant {
         auto parent2 = Gene();
 
         {
-            std::uniform_real_distribution<double> dis( 0, 1 - parent1.likelihood );
+            std::uniform_real_distribution<double> dis( 0., 1. - parent1.likelihood );
 
             auto prob = dis( mt_generator_ );
             auto likelihood_sum = 0.;
